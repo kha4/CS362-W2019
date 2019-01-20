@@ -1,6 +1,6 @@
 # CS362-W2019
 
-Christina Everdyke's Forked Repo:
+Christina Everdyke's second assignment
 
 ONID: everdykc  
 Email: everdykc@oregonstate.edu  
