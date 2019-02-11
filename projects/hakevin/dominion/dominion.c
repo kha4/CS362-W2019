@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-void callAdventurer(struct gameState*, int);
+void callAdventurer(struct gameState*, int, int); //bug, need to add another int argument for adventurer to work
 void callSmithy(struct gameState*, int, int);
 void callSalvager(struct gameState*, int, int, int);
 void callCouncilRoom(struct gameState*, int, int);
@@ -674,7 +674,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-	callAdventurer(state, currentPlayer); //call adventure function
+	callAdventurer(state, currentPlayer, handPos); //call adventure function, need to add handPos argument
       return 0;
 			
     case council_room:
@@ -1249,15 +1249,19 @@ int updateCoins(int player, struct gameState *state, int bonus)
 }
 
 
-void callAdventurer(struct gameState *state, int currentPlayer)
+void callAdventurer(struct gameState *state, int currentPlayer, int handPos) //need to add int handPos argument for it to work
 {
 	int drawnTreasure = 0;
 	int cardDrawn;
 	int tempHand[MAX_HAND];
 	int z = 0;
 
-	while(drawnTreasure < 1)
+	//added this so adventurer is discarded from hand after being played
+	discardCard(handPos, currentPlayer, state, 0);
+
+	while(drawnTreasure < 2)//bug here from assignment 2, needs to be changed to 2
 	{
+		
 		if(state->deckCount[currentPlayer] < 1)
 		{
 			shuffle(currentPlayer, state);//shuffle when deck is empty

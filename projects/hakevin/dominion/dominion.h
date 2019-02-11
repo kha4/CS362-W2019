@@ -10,10 +10,13 @@
 
 #define DEBUG 0
 
+#define assertTrue(bool) if (bool) printf("TEST PASSED\n"); else {printf("TEST FAILED: '" #bool "' on line %d\n", __LINE__); printf("Exiting test\n"); exit(1);}
+
 /* http://dominion.diehrstraits.com has card texts */
 /* http://dominion.isotropic.org has other stuff */
 
 /* hand# means index of a card in current active player's hand */
+
 
 enum CARD
   {curse = 0,
