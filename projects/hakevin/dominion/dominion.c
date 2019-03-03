@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-void callAdventurer(struct gameState*, int);
+void callAdventurer(struct gameState*, int, int); //added another int argument for discard to work
 void callSmithy(struct gameState*, int, int);
 void callSalvager(struct gameState*, int, int, int);
 void callCouncilRoom(struct gameState*, int, int);
@@ -674,7 +674,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-	callAdventurer(state, currentPlayer); //call adventure function
+	callAdventurer(state, currentPlayer, handPos); //added handPos
       return 0;
 			
     case council_room:
@@ -1249,14 +1249,17 @@ int updateCoins(int player, struct gameState *state, int bonus)
 }
 
 
-void callAdventurer(struct gameState *state, int currentPlayer)
+void callAdventurer(struct gameState *state, int currentPlayer, int handPos) //added int handPos argument
 {
 	int drawnTreasure = 0;
 	int cardDrawn;
 	int tempHand[MAX_HAND];
 	int z = 0;
 
-	while(drawnTreasure < 1)
+	//added so that adventurer card is discarded from hand after being played
+	discardCard(handPos, currentPlayer, state, 0);
+
+	while(drawnTreasure < 2) //bug here from assignment 2, changed to 2
 	{
 		if(state->deckCount[currentPlayer] < 1)
 		{
@@ -1294,7 +1297,7 @@ void callSmithy(struct gameState* state, int currentPlayer, int handPos)
 		drawCard(currentPlayer, state); //draws three cards
 	}
 
-	discardCard(currentPlayer, handPos, state, 0);
+	discardCard(handPos, currentPlayer, state, 0);
 	return;
 }
 
@@ -1306,6 +1309,7 @@ void callSalvager(struct gameState* state, int choice1, int currentPlayer, int h
 	{
 		//add coins equal to the trashed card
 		state->coins = state->coins + getCost(handCard(choice1, state));
+		//trash
 		discardCard(choice1, currentPlayer, state, 1);
 	}
 
